@@ -1,0 +1,27 @@
+row
+  .col-md-12
+    table.table
+      caption
+        .pull-right.add-link
+          = link_to "Add Member", new_member_url, class: "btn btn-xs btn-success"
+        ' Members
+      thead
+        tr
+          th Name
+          th Age
+          th.numerical App
+          th.tools
+      tbody
+        - @members.each do |member|
+          - cls = ( member.is_public ? "" : "private-profile" )
+          tr class="#{cls}"
+            td
+              = link_to member.name, member_url(member)
+            td
+              = member.age
+            td.numerical
+              - num_apps = member.apps.length
+              = ( num_apps > 0 ? num_apps : "" )
+            td.edit-icon.tools
+              = link_to "Edit", edit_member_url(member), \
+                title: "Edit |#{member.name}|", class: "btn btn-xs btn-success"

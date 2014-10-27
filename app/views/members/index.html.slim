@@ -1,0 +1,42 @@
+row
+  .col-md-12
+    table.table
+      caption
+        .pull-right.add-link
+          = link_to "Add Member", new_member_url, class: "btn btn-xs btn-success"
+        ' Members
+      thead
+        tr
+          th Name
+          th Email
+          th Age
+          th Occupation
+          th Nationality
+          th Country
+          th Sectors
+          th.numerical Apps
+          th.tools
+      tbody
+        - @members.each do |member|
+          - cls = ( member.is_public ? "" : "private-profile" )
+          tr class="#{cls}"
+            td
+              = link_to member.name, member_url(member)
+            td
+              = member.email.blank? ? "" : link_to( member.email, "mailto:#{member.email}" )
+            td
+              = member.age
+            td
+              = member.occupation.titleize
+            td
+              = member.nationality
+            td
+              = member.nationality
+            td
+              = member.sectors.map {|s| Member.ok_sectors.to_a[s.to_i][0]}.join("<br>").html_safe
+            td.numerical
+              - num_apps = member.apps.length
+              = ( num_apps > 0 ? num_apps : "" )
+            td.edit-icon.tools
+              = link_to "Edit", edit_member_url(member), \
+                title: "Edit |#{member.name}|", class: "btn btn-xs btn-success"

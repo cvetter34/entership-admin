@@ -1,0 +1,30 @@
+table.table
+  caption
+    - if @num_unread && @num_unread > 0
+      .pull-right.unread-contacts #{@num_unread} unread
+    ' Contacts
+  thead
+    tr
+      th Message
+      th.date Sent at
+  - if @contacts.empty?
+    tbody
+      tr
+        td
+          - if @num_contacts and @num_contacts > 0
+            ' No unread contacts
+          - else
+            ' No contacts yet
+  - else
+    tbody
+      - @contacts.each do |contact|
+        tr class="#{contact.seen? ? 'unread' : 'read'}"
+          td
+            - if contact.member.nil?
+              ' #{link_to contact.company.name, company_url(contact.company)} wrote:
+            - else
+              ' #{link_to contact.member.name, member_url(contact.member)} wrote:
+            br
+            = link_to contact.subject, contacts_url(contact: contact, anchor: "contact"), \
+              class: "subject", anchor: "contact"
+          td.date = contact.created_at.to_formatted_s(:contact_time).html_safe

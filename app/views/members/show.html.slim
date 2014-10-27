@@ -1,0 +1,100 @@
+.row
+  .col-xs-12
+    h1
+      .pull-right.view-link
+        => link_to "Edit #{@member.name_given}", edit_member_url(@member), \
+          class: "btn btn-sm btn-success"
+        =<> link_to "Add Member", new_member_url, \
+          class: "btn btn-sm btn-success"
+        =<> link_to "List All Members", members_url, \
+          class: "btn btn-sm btn-success"
+      = @member.full_name
+    .row
+      .col-sm-2.col-xs-4
+        .show-label Date of birth
+      .col-sm-4.col-xs-8
+        .show-value = if @member.born_on then @member.born_on.to_formatted_s(:table_date)
+      .col-sm-2.col-xs-4
+        .show-label Occupation
+      .col-sm-4.col-xs-8
+        .show-value = @member.occupation.titleize
+    .row
+      .col-sm-2.col-xs-4
+        .show-label Street address
+      .col-sm-4.col-xs-8
+        .show-value = @member.street_address_as_html
+      .col-sm-2.col-xs-4
+        .show-label Sectors
+      .col-sm-4.col-xs-8
+        .show-value = @member.sectors.map {|s| Member.ok_sectors.to_a[s.to_i][0]}.join("<br>").html_safe
+    .row
+      .col-sm-2.col-xs-4
+        .show-label City
+      .col-sm-4.col-xs-8
+        .show-value = @member.city
+      .col-sm-2.col-xs-4
+        .show-label Postal (zip) code
+      .col-sm-4.col-xs-8
+        .show-value = @member.postal_code
+    .row
+      .col-sm-2.col-xs-4
+        .show-label Country
+      .col-sm-4.col-xs-8
+        .show-value = @member.country
+      .col-sm-2.col-xs-4
+        .show-label Nationality
+      .col-sm-4.col-xs-8
+        .show-value = @member.nationality
+    .row
+      .col-sm-2.col-xs-4
+        .show-label Email
+      .col-sm-4.col-xs-8
+        .show-value = link_to @member.email, "mailto:#{@member.email}"
+      .col-sm-2.col-xs-4
+        .show-label Phones
+      .col-sm-4.col-xs-8
+        .show-value
+          = "#{@member.phone} (main)" unless @member.phone.blank?
+          br
+          = "#{@member.mobile} (mobile)" unless @member.mobile.blank?
+    .row
+      .col-sm-2.col-xs-4
+        .show-label Website
+      .col-sm-4.col-xs-8
+        .show-value = ( link_to @member.website_url, @member.website_url unless @member.website_url.blank? )
+      .col-sm-2.col-xs-10
+        .show-label Notice required
+      .col-sm-4.col-xs-8
+        .show-value = Member.ok_notices.to_a[@member.notice][0] unless @member.notice.blank?
+    .row
+      .col-sm-2.col-xs-4
+        .show-label Will relocate?
+      .col-sm-4.col-xs-8
+        - will_relocate = ( @member.will_relocate ? "YES" : "no" )
+        .show-value
+          span class="#{will_relocate.downcase}" = will_relocate
+      .col-sm-2.col-xs-4
+        .show-label Visibility
+      .col-sm-4.col-xs-8
+        - is_public = ( @member.is_public ? "PUBLIC" : "private" )
+        .show-value
+          span class="#{@member.is_public ? 'yes' : 'no'}" #{is_public}
+    .row
+      .col-sm-2.col-xs-4
+        .show-label Current status
+      .col-sm-4.col-xs-8
+        .show-value = Member.ok_statuses.to_a[@member.current_status][0]
+      .col-sm-2.col-xs-4
+        .show-label Experience
+      .col-sm-4.col-xs-8
+
+    .row
+      .col-md-2.col-xs-12
+        .show-label Profile photo
+      .col-md-10.col-xs-12
+        .show-value = image_tag @member.photo.url(:medium) unless @member.photo.blank?
+    .row
+      .col-xs-12
+        .show-delete
+          button.btn.btn-danger data-url="#{member_url(@member)}" data-name="#{@member.name}" data-redirect="#{members_url}"
+            ' Delete #{@member.name}

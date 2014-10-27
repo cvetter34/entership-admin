@@ -1,0 +1,25 @@
+.row
+  .col-md-8.col-md-offset-2
+    = form_for :manager, url: log_in_url, html: { class: "login-form" } do |f|
+      fieldset
+        legend Please sign in
+        .row
+          .col-md-6
+            .form-group
+              = f.label :email, class: "sr-only"
+              = f.text_field :email, class: "form-control", \
+                placeholder: "Email address", value: @email, required: true
+            .form-group
+              = f.label :password, class: "sr-only"
+              = f.password_field :password, class: "form-control", \
+                placeholder: "Password"
+            .form-group
+              input#form-type type="hidden" name="form" value="login"
+              = f.submit "Sign in", class: "btn btn-success", id: "submit-button"
+
+          .col-md-6
+            p.reset-text
+              ' To reset your password, simply enter your email address, leave
+              ' the password field blank, and submit the form. You'll receive
+              ' a coded link via email that will allow you to reset your
+              ' password.

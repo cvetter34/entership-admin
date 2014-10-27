@@ -1,0 +1,224 @@
+= form_for @member, url: (@member.persisted? ? member_url(@member) : members_url), role: "form" do |f|
+  fieldset
+    legend
+      - if @member.persisted?
+        .pull-right.view-link
+          =<> link_to "View #{@member.name_given}", member_url(@member), \
+            class: "btn btn-sm btn-success"
+          =<> link_to "Add Member", new_member_url,  \
+            class: "btn btn-sm btn-success"
+          =<> link_to "List All Members", members_url, \
+            class: "btn btn-sm btn-success"
+        ' Edit profile for
+        span.member.name> = @member.name
+      - else
+        .pull-right.view-link
+          =<> link_to "List All Members", members_url, \
+            class: "btn btn-sm btn-success"
+        ' Add a new member
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :title
+          = f.select :title, options_for_select(Member.ok_titles.to_a, selected: @member.title), \
+            {}, { class: "form-control has-help", autofocus: true, \
+            data: { "help-id" => "member-title-help" } }
+      .col-sm-6
+        p#member-title-help.help-text The member's title.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :name_given, "Given name"
+          = f.text_field :name_given, class: "form-control has-help", placeholder: "Enter given name of member", \
+            data: { "help-id" => "member-name-given-help" }
+      .col-sm-6
+        p#member-name-given-help.help-text This is the given name of the member, e.g., "John".
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :name_family, "Family name"
+          = f.text_field :name_family, class: "form-control has-help", placeholder: "Enter family name of member", \
+            data: { "help-id" => "member-name-family-help" }
+      .col-sm-6
+        p#member-name-family-help.help-text This is the family name of the member, e.g., "Smith".
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :email, "Email address"
+          = f.text_field :email, class: "form-control has-help", placeholder: "Enter the email address for the member", \
+            data: { "help-id" => "member-email-help" }
+      .col-sm-6
+        p#member-email-help.help-text The member's email. Note: will not be validated.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :born_on, "Date of birth"
+          #born-on-datepicker.input-group.date
+            = f.text_field :born_on, class: "form-control has-help", \
+              placeholder: "Enter date of birth of member: YYYY-MM-DD", \
+              data: { "help-id" => "member-born-on-help" }
+            span.input-group-addon
+              span.fa.fa-calendar
+      .col-sm-6
+        p#member-born-on-help.help-text This is the date on which the member was born.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :street_address
+          = f.text_area :street_address, class: "form-control has-help", placeholder: "Enter member street address", \
+            data: { "help-id" => "member-street-address-help" }
+      .col-sm-6
+        p#member-street-address-help.help-text This is the member's street address.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :city
+          = f.text_field :city, class: "form-control has-help", placeholder: "Enter the city for the member", \
+            data: { "help-id" => "member-city-help" }
+      .col-sm-6
+        p#member-city-help.help-text The city in which the member is currently located.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :postal_code, "Postal or zip code"
+          = f.text_field :postal_code, class: "form-control has-help", placeholder: "Enter the postal (zip) code for the member", \
+            data: { "help-id" => "member-postal-code-help" }
+      .col-sm-6
+        p#member-postal-code-help.help-text The postal or zip code in which the member is currently located.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :country_code, "Country"
+          = f.country_select :country_code, { priority_countries: ["HK"], prompt: "Select the member's country" }, \
+            class: "form-control has-help", data: { "help-id" => "member-country-help" }
+      .col-sm-6
+        p#member-country-help.help-text This is the country in which the member is located (for search).
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :nationality_code, "Nationality"
+          = f.country_select :nationality_code, { priority_countries: ["HK"], prompt: "Select the member's nationality" }, \
+            class: "form-control has-help", data: { "help-id" => "member-nationality-help" }
+      .col-sm-6
+        p#member-nationality-help.help-text This is the nationality of the member.
+
+    .row.required
+      .col-sm-6
+        label.checkboxes.has-help data-help-id="member-sectors-help"
+          ' Sectors (select one or more)
+          = check_boxes_for_member_sector(@member.sectors, "Member", "sectors")
+      .col-sm-6
+        p#member-sectors-help.help-text The member's sectors are used to facilitate searching for jobs.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :current_status
+          = f.select :current_status, options_for_select(Member.ok_statuses.to_a, selected: @member.current_status), \
+            {}, { class: "form-control has-help", \
+            data: { "help-id" => "member-current-status-help" } }
+      .col-sm-6
+        p#member-current-status-help.help-text The member's current status.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :experience
+          = f.select :experience, options_for_select(Member.ok_experiences.to_a, selected: @member.experience), \
+            {}, { class: "form-control has-help", \
+            data: { "help-id" => "member-experience-help" } }
+      .col-sm-6
+        p#member-experience-help.help-text The member's level of experience.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :phone, "Phone number"
+          = f.text_field :phone, class: "form-control has-help", placeholder: "Enter the members phone number", \
+            data: { "help-id" => "member-phone-help" }
+      .col-sm-6
+        p#member-phone-help.help-text The member's telephone number.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :mobile, "Mobile number"
+          = f.text_field :mobile, class: "form-control has-help", placeholder: "Enter mobile number of member", \
+            data: { "help-id" => "member-mobile-help" }
+      .col-sm-6
+        p#member-mobile-help.help-text This is the mobile phone number of the member.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :website_url, "Website"
+          = f.text_field :website_url, class: "form-control has-help", placeholder: "Enter website URL for the member", \
+            data: { "help-id" => "member-website-url-help" }
+      .col-sm-6
+        p#member-website-url-help.help-text This is the URL (web address) of the member's personal website.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :occupation
+          = f.text_field :occupation, class: "form-control has-help", placeholder: "Enter the occupation of the member.", \
+            data: { "help-id" => "member-occupation-help" }
+      .col-sm-6
+        p#member-occupation-help.help-text The occupation of the member.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :notice, "Notice required"
+          = f.select :notice, options_for_select(Member.ok_notices.to_a, selected: @member.notice, allow_nil: true), \
+            {}, { class: "form-control has-help", \
+            data: { "help-id" => "member-notice-help" } }
+      .col-sm-6
+        p#member-notice-help.help-text The notice that the member requires.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          .checkbox
+            = f.label :will_relocate do
+              = f.check_box :will_relocate, class: "has-help", \
+                data: { "help-id" => "member-will-relocate-help" }
+              ' Member is willing to relocate
+      .col-sm-6
+        p#member-will-relocate-help.help-text.checkbox-help
+          ' The member is willing to consider relocation for the job.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          .checkbox
+            = f.label :is_public do
+              = f.check_box :is_public, class: "has-help", \
+                data: { "help-id" => "member-is-public-help" }
+              ' Member's profile is public
+      .col-sm-6
+        p#member-is-public-help.help-text.checkbox-help
+          ' The member's profile can be seen by everyone.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :photo
+          = f.file_field :photo, class: "form-control has-help", placeholder: "Attach the member photo", \
+            data: { "help-id" => "member-photo-help" }
+      .col-sm-6
+        p#member-photo-help.help-text Upload the member's profile photo here.
+
+    .row
+      .col-sm-12
+        = f.submit class: "btn btn-warning"

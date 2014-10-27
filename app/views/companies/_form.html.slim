@@ -1,0 +1,176 @@
+= form_for @company, role: "form" do |f|
+  fieldset
+    legend
+      - if @company.persisted?
+        .pull-right.view-link
+          =<> link_to "View", company_url(@company), \
+            title: "View |#{@company.name}|", class: "btn btn-sm btn-success"
+          =<> link_to "Add Company", new_company_url, \
+            class: "btn btn-sm btn-success"
+          =<> link_to "List All Companies", companies_url, \
+            class: "btn btn-sm btn-success"
+        ' Edit
+        span.company.name> = @company.name
+      - else
+        .pull-right.view-link
+          =<> link_to "List All Companies", companies_url, \
+            class: "btn btn-sm btn-success"
+        ' Add a new company
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :name
+          = f.text_field :name, class: "form-control has-help", placeholder: "Enter the name of the company", \
+            data: { "help-id" => "company-name-help" }
+      .col-sm-6
+        p#company-name-help.help-text This is the name of the company to be shown publicly.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :email
+          = f.text_field :email, class: "form-control has-help", placeholder: "Enter the email address", \
+            data: { "help-id" => "company-email-help" }
+      .col-sm-6
+        p#company-email-help.help-text The email address used to log in.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :address
+          = f.text_area :address, class: "form-control has-help", placeholder: "Enter the address", \
+            data: { "help-id" => "company-address-help" }
+      .col-sm-6
+        p#company-address-help.help-text This is the address of the company's headquarters.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :address_alt, "Alternate address"
+          = f.text_area :address_alt, class: "form-control has-help", placeholder: "Enter an alternate address", \
+            data: { "help-id" => "company-address-alt-help" }
+      .col-sm-6
+        p#company-address-alt-help.help-text This is an alternate company address.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :country_code, "Country"
+          = f.country_select :country_code, { priority_countries: ["HK"], prompt: "Select the country" }, \
+            class: "form-control has-help", data: { "help-id" => "company-country-help" }
+      .col-sm-6
+        p#company-country-help.help-text This is the country in which the company is located (for search).
+
+    .row.required
+      .col-sm-6
+        label.checkboxes.has-help data-help-id="company-sectors-help"
+          ' Sectors (select one or more)
+          = check_boxes_for_company_sector(@company.sectors, "Company", "sectors")
+      .col-sm-6
+        p#company-sectors-help.help-text The company sector is used to facilitate searching for jobs.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :phone
+          = f.text_field :phone, class: "form-control has-help", placeholder: "Enter the phone number", \
+            data: { "help-id" => "company-phone-help" }
+      .col-sm-6
+        p#company-phone-help.help-text The phone number to use when contacting the company.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :website_url
+          = f.text_field :website_url, class: "form-control has-help", placeholder: "Enter the URL of the website", \
+            data: { "help-id" => "company-website-url-help" }
+      .col-sm-6
+        p#company-website-url-help.help-text The URL of the company's website, e.g., "example.com".
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :company_type
+          = f.select :company_type, options_for_company_type(@company.company_type), \
+            {}, { class: "form-control has-help", \
+            data: { "help-id" => "company-type-help" } }
+      .col-sm-6
+        p#company-type-help.help-text The type of company.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :company_size
+          = f.select :company_size, options_for_company_size(@company.company_size), \
+            {}, { class: "form-control has-help", \
+            data: { "help-id" => "company-size-help" } }
+      .col-sm-6
+        p#company-size-help.help-text The number of people in the company.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :contact_person
+          = f.text_area :contact_person, class: "form-control has-help", placeholder: "Enter the contact info", \
+            data: { "help-id" => "company-contact-info-help" }
+      .col-sm-6
+        p#company-contact-info-help.help-text This is the contact information for the company.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :contact_email
+          = f.text_field :contact_email, class: "form-control has-help", placeholder: "Enter the email address", \
+            data: { "help-id" => "company-contact-email-help" }
+      .col-sm-6
+        p#company-contact-email-help.help-text The email address to use when contacting the company.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :mobile, "Mobile phone"
+          = f.text_field :phone, class: "form-control has-help", placeholder: "Enter the phone number", \
+            data: { "help-id" => "company-mobile-help" }
+      .col-sm-6
+        p#company-mobile-help.help-text An optional mobile phone number for use when contacting the company.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :fax
+          = f.text_field :fax, class: "form-control has-help", placeholder: "Enter the fax number", \
+            data: { "help-id" => "company-fax-help" }
+      .col-sm-6
+        p#company-fax-help.help-text The fax number to use when faxing the company.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :year_founded
+          = f.text_field :year_founded, class: "form-control has-help", placeholder: "Enter the year founded", \
+            data: { "help-id" => "company-year-founded-help" }
+      .col-sm-6
+        p#company-year-founded-help.help-text The year that the company was founded.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :description
+          = f.text_area :description, class: "form-control has-help", placeholder: "Enter the description", \
+            data: { "help-id" => "company-description-help" }
+      .col-sm-6
+        p#company-description-help.help-text This is the description of the company's business.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :logo
+          = f.file_field :logo, class: "form-control has-help", placeholder: "Attach the company logo", \
+            data: { "help-id" => "company-logo-help" }
+      .col-sm-6
+        p#company-logo-help.help-text Upload the company logo here.
+
+    .row
+      .col-sm-12
+        = f.submit class: "btn btn-warning"

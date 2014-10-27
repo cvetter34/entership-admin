@@ -1,0 +1,53 @@
+= form_for @manager, role: "form" do |f|
+  fieldset
+    legend
+      - if @manager.persisted?
+        .pull-right.view-link
+          - manager_txt = '<i class="fa fa-eye manager-view-icon"></i>'.html_safe
+          =<> link_to manager_txt, manager_url(@manager), title: "View #{@manager.name}"
+          ' &nbsp;
+          - list_txt = '<i class="fa fa-plus manager-new-icon"></i>'.html_safe
+          =<> link_to list_txt, managers_url, title: "Add a new manager"
+          ' &nbsp;
+          - list_txt = '<i class="fa fa-list manager-list-icon"></i>'.html_safe
+          =<> link_to list_txt, managers_url, title: "List all managers"
+        ' Edit profile for
+        span.manager.name> = @manager.name
+      - else
+        .pull-right.view-link
+          - list_txt = '<i class="fa fa-list manager-list-icon"></i>'.html_safe
+          =<> link_to list_txt, managers_url
+        ' Add a new manager
+
+    .row
+      .col-sm-6
+        .form-group
+          = f.label :name, class: "sr-only"
+          = f.text_field :name, class: "form-control has-help", placeholder: "Enter name of manager", \
+            data: { "help-id" => "manager-name-help" }, autofocus: true
+      .col-sm-6
+        p#manager-name-help.help-text.required This is the full name of the manager, e.g., "John Smith".
+
+    .row
+      .col-sm-6
+        .form-group
+          = f.label :email, class: "sr-only"
+          = f.text_field :email, class: "form-control has-help", placeholder: "Enter the manager's email address", \
+            data: { "help-id" => "manager-email-help" }
+      .col-sm-6
+        p#manager-email-help.help-text.required The manager's email. Note: will not be validated.
+
+    .row
+      .col-sm-6
+        .form-group
+          .checkbox
+            = f.label :is_director do
+              = f.check_box :is_director, class: "has-help", \
+                data: { "help-id" => "manager-director-help" }
+              ' Make this manager a director
+      .col-sm-6
+        p#manager-director-help.help-text.optional Directors can add and delete managers!
+
+    .row
+      .col-sm-12
+        = f.submit class: "btn btn-warning"

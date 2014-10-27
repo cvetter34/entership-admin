@@ -1,0 +1,26 @@
+.row
+  .col-md-6
+    = render partial: "shared/contacts_list"
+
+  .col-md-6
+    - if @contact
+      h1#contact
+        .pull-right.add-link
+          = link_to "Hide this contact", contacts_url, \
+            class: "btn btn-sm btn-success"
+        = @contact.subject
+      .sender
+        ' On
+        = @contact.created_at.to_formatted_s(:mail_timestamp)
+        br
+        - if @contact.member.nil?
+          =<> link_to @contact.company.name, company_url(@contact.company)
+        - else
+          =<> link_to @contact.member.name, member_url(@contact.member)
+        ' said:
+      .message = @contact.body_as_html
+      .timestamp
+
+      .show-delete
+        button.btn.btn-danger data-url="#{contact_url(@contact)}" data-name="#{@contact.subject}" data-redirect="#{contacts_url}"
+          ' Delete contact

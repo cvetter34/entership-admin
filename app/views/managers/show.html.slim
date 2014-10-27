@@ -1,0 +1,28 @@
+.row
+  .col-md-12
+    h1
+      .pull-right.view-link
+        - edit_manager_txt = '<i class="fa fa-pencil manager-edit-icon"></i>'.html_safe
+        = link_to edit_manager_txt, edit_manager_url(@manager), title: "Edit #{@manager.name}"
+        ' &nbsp;
+        - list_txt = '<i class="fa fa-plus manager-new-icon"></i>'.html_safe
+        =<> link_to list_txt, managers_url, title: "Add a new manager"
+        ' &nbsp;
+        - list_txt = '<i class="fa fa-list manager-list-icon"></i>'.html_safe
+        =<> link_to list_txt, managers_url, title: "List all managers"
+      = @manager.name
+.row
+  .col-md-2.col-xs-4
+    .show-label Email
+  .col-md-4.col-xs-8
+    .show-value = link_to @manager.email, "mailto:#{@manager.email}"
+  - if @current_manager.is_director
+    .col-md-2.col-xs-4
+      .show-label Director
+    .col-md-4.col-xs-8
+      .show-value = ( @manager.is_director ? '<span class="yes">Yes</span>' : '<span class="no">No</span>' ).html_safe
+.row
+  .col-xs-12
+    .show-delete
+      button.btn.btn-danger data-url="#{manager_url(@manager)}" data-name="#{@manager.name}" data-redirect="#{managers_url}"
+        ' Delete #{@manager.name}

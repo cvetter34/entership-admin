@@ -1,0 +1,33 @@
+.row
+  .col-md-6
+    = render partial: "shared/contacts_list"
+  .col-md-6
+    - if @contact
+      == render partial: "shared/contact"
+    - else
+      table.table
+        caption System status
+        thead
+          tr
+            th Property
+            th.numerical Count
+        tbody
+          tr
+            th = link_to "Unread / Total contacts", contacts_url
+            td.numerical = "#{@contacts.length} / #{@num_contacts}"
+          tr
+            th = link_to "Current members", members_url
+            td.numerical = @num_members
+          tr
+            th = link_to "Publicly visible companies", companies_url
+            td.numerical = @num_companies
+          tr
+            th Current job listings
+            td.numerical = @num_jobs
+          tr
+            th Pending job applications
+            td.numerical = @num_apps
+          - if @current_manager.is_director
+            tr
+              th = link_to "Directors / Managers", managers_url
+              td.numerical = "#{@num_directors} / #{@num_managers}"

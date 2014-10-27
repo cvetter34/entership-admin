@@ -1,0 +1,57 @@
+doctype html
+html lang="en"
+  head
+    meta charset="utf-8"
+      meta content="width=device-width, initial-scale=1" name="viewport"
+        = csrf_meta_tags
+
+        title EnterShip Manager
+
+        - unless current_manager
+          = stylesheet_link_tag "public", media: "all"
+        = stylesheet_link_tag "application", media: "all"
+  body
+    header.navbar.navbar-default.navbar-fixed-top role="navigation"
+      .container
+        .navbar-header
+          button.navbar-toggle data-target=".navbar-collapse" data-toggle="collapse" type="button"
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          = link_to_unless_current image_tag( "eslogo-admin.png", class: "logo-image", alt: "Entership Manager" ), root_url, class: "navbar-brand", title: "To the home page" do |text|
+            span.navbar-brand= text
+        .navbar-collapse.collapse
+          - if current_manager
+            ul.nav.navbar-nav
+              li
+                = link_to_unless_current "Contacts", contacts_url do |text|
+                  span.current-page = text
+              li
+                = link_to_unless_current "Members", members_url do |text|
+                  span.current-page = text
+              li
+                = link_to_unless_current "Companies", companies_url do |text|
+                  span.current-page = text
+              - if current_manager.is_director
+                li
+                  = link_to_unless_current "Managers", managers_url do |text|
+                    span.current-page = text
+            ul.nav.navbar-nav.navbar-right
+              li.hidden-sm
+                span.current-manager Welcome, #{current_manager.name}
+              li
+                = link_to "Sign out", log_out_url, method: :delete
+    main.container.main
+      = render partial: "layouts/flashes"
+      = yield
+    footer.footer
+      .container
+        span.copyright title="Version: #{request.variant.map {|v| v.to_s.titleize }.join(", ")}"
+          ' &copy; #{Date.today.year} by entership.net
+    = javascript_include_tag "application"
+    /! HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+    /![if lt IE 9]
+      | <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script
+      | <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script
+    = flash_noty_script_tag

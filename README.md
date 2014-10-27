@@ -1,4 +1,4 @@
-entership-admin
-===============
+EntershipManagers
+======
 
-Final Entership admin app.
+Entership management site

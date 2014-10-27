@@ -1,0 +1,24 @@
+row
+  .col-md-12
+    table.table
+      caption
+        .pull-right.add-link
+          - link_txt = '<i class="fa fa-plus fa-lg company-new-icon"></i>'.html_safe
+          = link_to link_txt, new_manager_url, title: "Add a new manager"
+        ' Managers
+      thead
+        tr
+          th Name
+          - if @current_manager.is_director
+            th Dir?
+          th
+      tbody
+        - @managers.each do |manager|
+          tr
+            td
+              = link_to manager.name, manager_url(manager)
+            - if @current_manager.is_director
+              td
+                = ( manager.is_director ? '<span class="yes">Yes</span>' : '<span class="no">No</span>' ).html_safe
+            td.edit-icon
+              = link_to content_tag(:span, "", class: "fa fa-pencil fa-lg"), edit_manager_url(manager)
